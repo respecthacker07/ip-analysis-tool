@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Analysis Pro - Advanced IP Address Analysis</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
+</head>
+<body data-color-scheme="dark">
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>🔍 IP Analysis Pro</h1>
+                    <span class="subtitle">Advanced IP Intelligence</span>
+                </div>
+                <nav class="nav">
+                    <a href="https://github.com" target="_blank" class="btn btn--outline btn--sm">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        GitHub
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Input Section -->
+            <section class="input-section">
+                <div class="input-card">
+                    <h2>Analyze IP Address</h2>
+                    <div class="input-group">
+                        <div class="input-wrapper">
+                            <input type="text" id="ipInput" class="form-control ip-input" placeholder="Enter IP address (e.g., 8.8.8.8)" autocomplete="off">
+                            <div class="input-actions">
+                                <button type="button" id="detectIpBtn" class="btn btn--outline btn--sm">Detect My IP</button>
+                                <select id="recentSearches" class="form-control recent-select hidden">
+                                    <option value="">Recent Searches</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="button" id="analyzeBtn" class="btn btn--primary btn--lg">
+                            <span class="btn-text">Analyze</span>
+                            <div class="loading-spinner hidden"></div>
+                        </button>
+                    </div>
+                    <div id="inputError" class="error-message hidden"></div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section id="resultsSection" class="results-section hidden">
+                <div class="results-header">
+                    <h2 id="analyzedIp">Analysis Results</h2>
+                    <div class="results-actions">
+                        <button type="button" id="exportBtn" class="btn btn--outline btn--sm">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7,10 12,15 17,10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Export
+                        </button>
+                        <button type="button" id="newAnalysisBtn" class="btn btn--secondary btn--sm">New Analysis</button>
+                    </div>
+                </div>
+
+                <div class="results-grid">
+                    <!-- Basic Information Card -->
+                    <div class="card result-card">
+                        <div class="card__header">
+                            <h3>🔍 Basic Information</h3>
+                            <div id="basicStatus" class="status-indicator"></div>
+                        </div>
+                        <div class="card__body">
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>IP Address</label>
+                                    <span id="basicIp" class="info-value">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Type</label>
+                                    <span id="basicType" class="info-value">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Organization</label>
+                                    <span id="basicOrg" class="info-value">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>ASN</label>
+                                    <span id="basicAsn" class="info-value">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Geolocation Card -->
+                    <div class="card result-card">
+                        <div class="card__header">
+                            <h3>🌍 Geolocation</h3>
+                            <div id="geoStatus" class="status-indicator"></div>
+                        </div>
+                        <div class="card__body">
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>Country</label>
+                                    <span id="geoCountry" class="info-value">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Region</label>
+                                    <span id="geoRegion" class="info-value">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>City</label>
+                                    <span id="geoCity" class="info-value">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Timezone</label>
+                                    <span id="geoTimezone" class="info-value">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Coordinates</label>
+                                    <span id="geoCoords" class="info-value">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Postal Code</label>
+                                    <span id="geoPostal" class="info-value">Loading...</span>
+                                </div>
+                            </div>
+                            <div id="mapContainer" class="map-container">
+                                <div class="map-placeholder">
+                                    <div class="map-loading">Loading map...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Network Details Card -->
+                    <div class="card result-card">
+                        <div class="card__header">
+                            <h3>🌐 Network Details</h3>
+                            <div id="networkStatus" class="status-indicator"></div>
+                        </div>
+                        <div class="card__body">
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>ISP</label>
+                                    <span id="networkIsp" class="info-value">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Connection Type</label>
+                                    <span id="networkType" class="info-value">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Domain</label>
+                                    <span id="networkDomain" class="info-value">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Hosting</label>
+                                    <span id="networkHosting" class="info-value">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Analysis Card -->
+                    <div class="card result-card">
+                        <div class="card__header">
+                            <h3>🔒 Security Analysis</h3>
+                            <div id="securityStatus" class="status-indicator"></div>
+                        </div>
+                        <div class="card__body">
+                            <div class="security-score">
+                                <div class="score-circle">
+                                    <div id="securityScore" class="score-value">Loading...</div>
+                                    <div class="score-label">Security Score</div>
+                                </div>
+                            </div>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>Threat Level</label>
+                                    <span id="securityThreat" class="info-value">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>VPN/Proxy</label>
+                                    <span id="securityProxy" class="info-value">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Tor Exit Node</label>
+                                    <span id="securityTor" class="info-value">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Reputation</label>
+                                    <span id="securityRep" class="info-value">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DNS Information Card -->
+                    <div class="card result-card">
+                        <div class="card__header">
+                            <h3>🔍 DNS Information</h3>
+                            <div id="dnsStatus" class="status-indicator"></div>
+                        </div>
+                        <div class="card__body">
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>PTR Record</label>
+                                    <span id="dnsPtr" class="info-value">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Hostname</label>
+                                    <span id="dnsHostname" class="info-value">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Associated Domains</label>
+                                    <span id="dnsDomains" class="info-value">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Insights Card -->
+                    <div class="card result-card">
+                        <div class="card__header">
+                            <h3>💡 Additional Insights</h3>
+                            <div id="insightsStatus" class="status-indicator"></div>
+                        </div>
+                        <div class="card__body">
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>Mobile Connection</label>
+                                    <span id="insightsMobile" class="info-value">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Currency</label>
+                                    <span id="insightsCurrency" class="info-value">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Languages</label>
+                                    <span id="insightsLanguages" class="info-value">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Abuse Contact</label>
+                                    <span id="insightsAbuse" class="info-value">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-content">
+            <div class="loading-spinner-large"></div>
+            <h3>Analyzing IP Address...</h3>
+            <p id="loadingStatus">Initializing analysis...</p>
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div id="exportModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Export Analysis Results</h3>
+                <button type="button" id="closeModal" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="export-options">
+                    <button type="button" id="exportJson" class="btn btn--outline btn--full-width">Export as JSON</button>
+                    <button type="button" id="exportCsv" class="btn btn--outline btn--full-width">Export as CSV</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
